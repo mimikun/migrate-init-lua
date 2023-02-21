@@ -2,7 +2,7 @@ today = $(shell date "+%Y%m%d")
 product_name = migrate-init-lua
 
 .PHONY : patch
-patch : clean diff-patch copy2win
+patch : clean-patch diff-patch patch-copy2win
 
 .PHONY : format-patch
 format-patch :
@@ -21,17 +21,23 @@ clean-patch :
 	rm -f *.patch
 
 .PHONY : patch-copy2win
-patch-copy2win :
+patch-copy2win : $(product_name).$(today).patch
 	cp *.patch $$WIN_HOME/Downloads/
 
-.PHONY : compress
-compress :
-	zip -r $(product_name) ./* ./.gitignore
+.PHONY : zip
+zip :
+	zip -r $(product_name).zip ./* ./.gitignore
 
-.PHONY : clean
-clean : clean-patch
+.PHONY : clean-zip
+clean-zip :
 	rm -f *.zip
 
-.PHONY : copy2win
-copy2win : patch-copy2win
+.PHONY : zip-copy2win
+zip-copy2win : $(product_name).zip
 	cp *.zip $$WIN_HOME/Downloads/
+
+.PHONY : clean
+clean : clean-patch clean-zip
+
+.PHONY : copy2win
+copy2win : zip-copy2win patch-copy2win
