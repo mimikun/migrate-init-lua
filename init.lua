@@ -54,8 +54,10 @@ opt.visualbell = true
 
 -- ファイル上の1行が画面上では複数行にわたっているとき
 -- NORMALモード時の j/kで見た目通りに移動できるようにする
-cmd('nnoremap j gj')
-cmd('nnoremap k gk')
+-- ref:
+-- https://zenn.dev/slin/articles/2020-11-03-neovim-lua2#%E3%83%9E%E3%83%83%E3%83%94%E3%83%B3%E3%82%B0
+vim.keymap.set('n', 'j', 'gj')
+vim.keymap.set('n', 'k', 'gk')
 
 -- TABキーを押したときにtab文字ではなくスペースを入力するようにする
 opt.expandtab = true
@@ -88,24 +90,28 @@ opt.whichwrap = 'b', 's', '<', '>', '[', ']'
 -- GUI VIM用の設定
 cmd('imap <S-CR> <End><CR>')
 cmd('imap <C-S-CR> <Up><End><CR>')
-cmd('nnoremap <S-CR> mzo<ESC>`z')
-cmd('nnoremap <C-S-CR> mzO<ESC>`z')
+vim.keymap.set('n', '<S-CR>', 'mzo<ESC>`z')
+vim.keymap.set('n', '<C-S-CR>', 'mzO<ESC>`z')
 
 -- Pythonのパスを指定
 g.python_host_prog = '~/.asdf/shims/python2'
 g.python3_host_prog = '~/.asdf/shims/python3'
 
 -- Ctrl+Wを押した後にnを押すことで新規タブを開けるようにする
-cmd('nnoremap <C-w>n <Esc>:enew<Return>')
+vim.keymap.set('n', '<C-w>n', '<Esc>:enew<Return>')
 
 -- NeoVimの無名レジスタ(yでヤンクしたときにコピーする先)とOSのクリップボードを結びつける
 -- 低スぺック環境ではオフにする
 --opt.clipboard:append { 'unnamedplus '}
 
 -- win32yankの設定
+-- TODO
 cmd('nnoremap <silent> <Space>y :.w !win32yank.exe -i<CR><CR>')
+--vim.keymap.set('n', '', '')
 cmd('vnoremap <silent> <Space>y :w !win32yank.exe -i<CR><CR>')
+-- TODO
 cmd('nnoremap <silent> <Space>p :r !win32yank.exe -o<CR>')
+--vim.keymap.set('n', '', '')
 cmd('vnoremap <silent> <Space>p :r !win32yank.exe -o<CR>')
 
 ---- lightline.vim 用
@@ -125,41 +131,42 @@ endif
 ]])
 
 -- vim-plug settings
-cmd([[call plug#begin()]])
--- Make sure you use single quotes
--- e.g.
--- Plug 'github-username/plugin-name'
-cmd([[Plug 'alker0/chezmoi.vim']])
+-- ref:
+-- https://dev.to/vonheikemen/neovim-using-vim-plug-in-lua-3oom
+local Plug = vim.fn['plug#']
+vim.call('plug#begin')
+Plug 'alker0/chezmoi.vim'
+Plug 'vim-denops/denops.vim'
+Plug 'Omochice/dps-translate-vim'
+Plug 'junegunn/fzf.vim'
+Plug 'antoinemadec/FixCursorHold.nvim'
+Plug 'lambdalisue/gin.vim'
+Plug 'thinca/vim-quickrun'
+Plug 'thinca/vim-scouter'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'lambdalisue/fern-git-status.vim'
+Plug 'lambdalisue/nerdfont.vim'
+Plug 'lambdalisue/fern-renderer-nerdfont.vim'
+Plug 'lambdalisue/glyph-palette.vim'
+Plug 'airblade/vim-gitgutter'
+Plug 'rcabralc/monokai-airline.vim'
+Plug 'godlygeek/tabular'
+Plug 'preservim/vim-markdown'
+Plug 'nastevens/vim-cargo-make'
+Plug 'cespare/vim-toml'
+Plug 'nastevens/vim-duckscript'
+Plug 'NoahTheDuke/vim-just'
+Plug 'IndianBoy42/tree-sitter-just'
+Plug 'vim-jp/vimdoc-ja'
+Plug 'imsnif/kdl.vim'
+Plug 'mattn/calendar-vim'
 cmd([[Plug 'neoclide/coc.nvim', {'branch': 'release'}]])
 cmd([[Plug 'pappasam/coc-jedi', { 'do': 'yarn install --frozen-lockfile && yarn build', 'branch': 'main' }]])
-cmd([[Plug 'vim-denops/denops.vim']])
-cmd([[Plug 'Omochice/dps-translate-vim']])
 cmd([[Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }]])
-cmd([[Plug 'junegunn/fzf.vim']])
 cmd([[Plug 'lambdalisue/fern.vim', {'branch': 'main'}]])
-cmd([[Plug 'antoinemadec/FixCursorHold.nvim']])
-cmd([[Plug 'lambdalisue/gin.vim']])
-cmd([[Plug 'thinca/vim-quickrun']])
 cmd([[Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}]])
-cmd([[Plug 'thinca/vim-scouter']])
-cmd([[Plug 'vim-airline/vim-airline']])
-cmd([[Plug 'vim-airline/vim-airline-themes']])
-cmd([[Plug 'lambdalisue/fern-git-status.vim']])
-cmd([[Plug 'lambdalisue/nerdfont.vim']])
-cmd([[Plug 'lambdalisue/fern-renderer-nerdfont.vim']])
-cmd([[Plug 'lambdalisue/glyph-palette.vim']])
-cmd([[Plug 'airblade/vim-gitgutter']])
-cmd([[Plug 'rcabralc/monokai-airline.vim']])
-cmd([[Plug 'godlygeek/tabular']])
-cmd([[Plug 'preservim/vim-markdown']])
-cmd([[Plug 'nastevens/vim-cargo-make']])
-cmd([[Plug 'cespare/vim-toml']])
-cmd([[Plug 'nastevens/vim-duckscript']])
-cmd([[Plug 'NoahTheDuke/vim-just']])
-cmd([[Plug 'IndianBoy42/tree-sitter-just']])
-
--- Initialize plugin system
-cmd([[call plug#end()]])
+vim.call('plug#end')
 
 -- coc.nvim settings
 -- <Tab>で候補をナビゲート
@@ -171,13 +178,16 @@ endfunction
 ]])
 
 -- <Tab>で次、<S+Tab>で前
-cmd([[
+--cmd([[
+--[[
 inoremap <silent><expr> <TAB>
   \ coc#pum#visible() ? coc#pum#next(1):
   \ <SID>check_back_space() ? "\<Tab>" :
   \ coc#refresh()
 inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
-]])
+]]
+
+
 
 -- nvim-treesitter config
 require'nvim-treesitter.configs'.setup {
@@ -245,7 +255,7 @@ g.airline_theme = 'monokai'
 -- fern.vim settings
 -- ref: https://qiita.com/youichiro/items/b4748b3e96106d25c5bc#%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E3%83%84%E3%83%AA%E3%83%BC%E3%82%92%E8%A1%A8%E7%A4%BA%E3%81%99%E3%82%8B
 -- Ctrl+nでファイルツリーを表示/非表示する
-cmd([[nnoremap <C-n> :Fern . -reveal=% -drawer -toggle -width=40<CR>]])
+vim.keymap.set('n', '<C-n>', ':Fern . -reveal=% -drawer -toggle -width=40<CR>')
 
 -- アイコン表示を有効にする
 cmd([[let g:fern#renderer = 'nerdfont']])
@@ -263,16 +273,16 @@ cmd([[let g:fern#default_hidden=1]])
 
 -- vim-gitgutter
 -- g]で前の変更箇所へ移動する
-cmd([[nnoremap g[ :GitGutterPrevHunk<CR>]])
+vim.keymap.set('n', 'g[', ':GitGutterPrevHunk<CR>')
 
 -- g[で次の変更箇所へ移動する
-cmd([[nnoremap g] :GitGutterNextHunk<CR>]])
+vim.keymap.set('n', 'g]', ':GitGutterNextHunk<CR>')
 
 -- ghでdiffをハイライトする
-cmd([[nnoremap gh :GitGutterLineHighlightsToggle<CR>]])
+vim.keymap.set('n', 'gh', ':GitGutterLineHighlightsToggle<CR>')
 
 -- gpでカーソル行のdiffを表示する
-cmd([[nnoremap gp :GitGutterPreviewHunk<CR>]])
+vim.keymap.set('n', 'gp', ':GitGutterPreviewHunk<CR>')
 
 -- 記号の色を変更する
 cmd([[highlight GitGutterAdd ctermfg=green]])
@@ -296,7 +306,7 @@ fun! FzfOmniFiles()
 endfun
 ]])
 
-cmd([[nnoremap <C-p> :call FzfOmniFiles()<CR>]])
+vim.keymap.set('n', '<C-p>', ':call FzfOmniFiles()<CR>')
 
 -- Ctrl+gで文字列検索を開く
 -- <S-?>でプレビューを表示/非表示する
@@ -309,31 +319,31 @@ command! -bang -nargs=* Rg
 \ <bang>0)
 ]])
 
-cmd([[nnoremap <C-g> :Rg<CR>]])
+vim.keymap.set('n', '<C-g>', ':Rg<CR>')
 
 -- frでカーソル位置の単語をファイル検索する
-cmd([[nnoremap fr vawy:Rg <C-R>"<CR>]])
+vim.keymap.set('n', 'fr', 'vawy:Rg <C-R>"<CR>')
 
 -- frで選択した単語をファイル検索する
 cmd([[xnoremap fr y:Rg <C-R>"<CR>]])
 
 -- fbでバッファ検索を開く
-cmd([[nnoremap fb :Buffers<CR>]])
+vim.keymap.set('n', 'fb', ':Buffers<CR>')
 
 -- fpでバッファの中で1つ前に開いたファイルを開く
-cmd([[nnoremap fp :Buffers<CR><CR>]])
+vim.keymap.set('n', 'fp', ':Buffers<CR><CR>')
 
 -- flで開いているファイルの文字列検索を開く
-cmd([[nnoremap fl :BLines<CR>]])
+vim.keymap.set('n', 'fl', ':BLines<CR>')
 
 -- fmでマーク検索を開く
-cmd([[nnoremap fm :Marks<CR>]])
+vim.keymap.set('n', 'fm', ':Marks<CR>')
 
 -- fhでファイル閲覧履歴検索を開く
-cmd([[nnoremap fh :History<CR>]])
+vim.keymap.set('n', 'fh', ':History<CR>')
 
 -- fcでコミット履歴検索を開く
-cmd([[nnoremap fc :Commits<CR>]])
+vim.keymap.set('n', 'fc', ':Commits<CR>')
 
 -- vim-markdown
 -- 折りたたみ無効化
@@ -345,5 +355,8 @@ g.vim_markdown_frontmatter = 1
 -- dps-translate-vim
 g.dps_translate_source = "en"
 g.dps_translate_target = "ja"
+
+-- ヘルプ日本語化
+opt.helplang = "ja", "en"
 
 cmd('filetype plugin indent on')
