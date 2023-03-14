@@ -79,7 +79,8 @@ opt.smartcase = true
 opt.wrapscan = true
 
 -- ESCキー連打でハイライト解除
-cmd('nmap <Esc><Esc> :nohlsearch<CR><Esc>')
+--cmd('nmap <Esc><Esc> :nohlsearch<CR><Esc>')
+vim.keymap.set('', '<Esc><Esc>', ':nohlsearch<CR><Esc>')
 
 --ある行の行頭から前の行の行末に移動したり, 逆に行末から次の行の行頭に移動できるようにする
 -- BackSpaceキー, SPACEキーで有効になる
@@ -88,8 +89,10 @@ cmd('nmap <Esc><Esc> :nohlsearch<CR><Esc>')
 opt.whichwrap = 'b', 's', '<', '>', '[', ']'
 
 -- GUI VIM用の設定
-cmd('imap <S-CR> <End><CR>')
-cmd('imap <C-S-CR> <Up><End><CR>')
+--cmd('imap <S-CR> <End><CR>')
+vim.keymap.set('i', '<S-CR>', '<End><CR>')
+--cmd('imap <C-S-CR> <Up><End><CR>')
+vim.keymap.set('i', '<C-S-CR>', '<Up><End><CR>')
 vim.keymap.set('n', '<S-CR>', 'mzo<ESC>`z')
 vim.keymap.set('n', '<C-S-CR>', 'mzO<ESC>`z')
 
@@ -105,14 +108,14 @@ vim.keymap.set('n', '<C-w>n', '<Esc>:enew<Return>')
 --opt.clipboard:append { 'unnamedplus '}
 
 -- win32yankの設定
--- TODO
-cmd('nnoremap <silent> <Space>y :.w !win32yank.exe -i<CR><CR>')
---vim.keymap.set('n', '', '')
-cmd('vnoremap <silent> <Space>y :w !win32yank.exe -i<CR><CR>')
--- TODO
-cmd('nnoremap <silent> <Space>p :r !win32yank.exe -o<CR>')
---vim.keymap.set('n', '', '')
-cmd('vnoremap <silent> <Space>p :r !win32yank.exe -o<CR>')
+--cmd('nnoremap <silent> <Space>y :.w !win32yank.exe -i<CR><CR>')
+vim.keymap.set('n', '<silent> <Space>y', ':.w !win32yank.exe -i<CR><CR>')
+--cmd('vnoremap <silent> <Space>y :w !win32yank.exe -i<CR><CR>')
+vim.keymap.set('v', '<silent> <Space>y', ':w !win32yank.exe -i<CR><CR>')
+--cmd('nnoremap <silent> <Space>p :r !win32yank.exe -o<CR>')
+vim.keymap.set('n', '<silent> <Space>p', ':r !win32yank.exe -o<CR>')
+--cmd('vnoremap <silent> <Space>p :r !win32yank.exe -o<CR>')
+vim.keymap.set('v', '<silent> <Space>p', ':r !win32yank.exe -o<CR>')
 
 ---- lightline.vim 用
 -- 常にタブページのラベル(各タブのファイル名)を表示
@@ -258,6 +261,7 @@ g.airline_theme = 'monokai'
 vim.keymap.set('n', '<C-n>', ':Fern . -reveal=% -drawer -toggle -width=40<CR>')
 
 -- アイコン表示を有効にする
+--cmd([[let g:fern#renderer = 'nerdfont']])
 cmd([[let g:fern#renderer = 'nerdfont']])
 
 -- アイコンに色をつける
@@ -325,7 +329,8 @@ vim.keymap.set('n', '<C-g>', ':Rg<CR>')
 vim.keymap.set('n', 'fr', 'vawy:Rg <C-R>"<CR>')
 
 -- frで選択した単語をファイル検索する
-cmd([[xnoremap fr y:Rg <C-R>"<CR>]])
+--cmd([[xnoremap fr y:Rg <C-R>"<CR>]])
+vim.keymap.set('x', 'fr y', ':Rg <C-R>"<CR>')
 
 -- fbでバッファ検索を開く
 vim.keymap.set('n', 'fb', ':Buffers<CR>')
