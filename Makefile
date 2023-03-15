@@ -17,6 +17,14 @@ patch-branch :
 clean-patch :
 	rm -f *.patch
 
+.PHONY : switch-master
+switch-master :
+	git switch master
+
+.PHONY : delete-branch
+delete-branch : switch-master
+	git branch --list "patch*" | xargs -n 1 git branch -D
+
 .PHONY : patch-copy2win
 patch-copy2win : $(product_name).$(today).patch
 	cp *.patch $$WIN_HOME/Downloads/
@@ -25,3 +33,6 @@ patch-copy2win : $(product_name).$(today).patch
 .PHONY : copy-from-config
 copy-from-config :
 	cp $$HOME/.config/nvim/init.lua* .
+
+.PHONY : clean
+clean : clean-patch
