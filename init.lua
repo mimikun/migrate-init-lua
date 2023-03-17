@@ -145,7 +145,26 @@ inoremap <silent><expr> <TAB>
 ]])
 cmd([[inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"]])
 
-
+-- VSCodeライクなタブ補完
+--cmd([[
+--[[
+inoremap <silent><expr> <TAB>
+  \ coc#pum#visible() ? coc#_select_confirm() :
+  \ coc#expandableOrJumpable() ?
+  \ "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
+  \ CheckBackspace() ? "\<TAB>" :
+  \ coc#refresh()
+]]
+--)
+--cmd([[
+--[[
+function! CheckBackspace() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+]]
+--)
+--cmd([[let g:coc_snippet_next = '<tab>']])
 
 -- nvim-treesitter config
 require'nvim-treesitter.configs'.setup {
@@ -204,7 +223,8 @@ g.coc_global_extensions = {
     'coc-solargraph',
     'coc-git',
     'coc-json',
-    'coc-rust-analyzer'
+    'coc-rust-analyzer',
+    'coc-snippets'
 }
 
 -- vim.airline settings
