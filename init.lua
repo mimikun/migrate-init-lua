@@ -128,16 +128,21 @@ opt.showmode = false
 require('plugins')
 
 -- coc.nvim settings
--- <Tab>で候補をナビゲート
+-- <tab> と<Shift-tab> でナビゲートするやつ
 cmd([[
-function! s:check_back_space() abort
+function! CheckBackspace() abort
   let col = col('.') - 1
   return !col || getline('.')[col - 1]  =~ '\s'
 endfunction
 ]])
 
--- <Tab>で次、<S+Tab>で前
-cmd[[inoremap <silent><expr> <TAB> coc#pum#visible() ? coc#pum#next(1): CheckBackspace() ? "\<Tab>" : coc#refresh()]]
+-- Insert <tab> when previous text is space, refresh completion if not.
+cmd([[
+inoremap <silent><expr> <TAB>
+  \ coc#pum#visible() ? coc#pum#next(1):
+  \ CheckBackspace() ? "\<Tab>" :
+  \ coc#refresh()
+]])
 cmd([[inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"]])
 
 
