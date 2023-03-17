@@ -236,7 +236,6 @@ g.airline_theme = 'monokai'
 vim.keymap.set('n', '<C-n>', ':Fern . -reveal=% -drawer -toggle -width=40<CR>')
 
 -- アイコン表示を有効にする
---cmd([[let g:fern#renderer = 'nerdfont']])
 cmd([[let g:fern#renderer = 'nerdfont']])
 
 -- アイコンに色をつける
