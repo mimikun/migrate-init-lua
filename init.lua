@@ -124,52 +124,8 @@ opt.showtabline = 2
 -- モードの表記を消す
 opt.showmode = false
 
--- vim-plug auto download
-cmd([[
-let data_dir = has('nvim') ? stdpath('data') . '/site' : '~/.vim'
-if empty(glob(data_dir . '/autoload/plug.vim'))
-  silent execute '!curl -fLo '.data_dir.'/autoload/plug.vim --create-dirs  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
-  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
-endif
-]])
-
--- vim-plug settings
--- ref:
--- https://dev.to/vonheikemen/neovim-using-vim-plug-in-lua-3oom
-local Plug = vim.fn['plug#']
-vim.call('plug#begin')
-Plug 'alker0/chezmoi.vim'
-Plug 'vim-denops/denops.vim'
-Plug 'Omochice/dps-translate-vim'
-Plug 'junegunn/fzf.vim'
-Plug 'antoinemadec/FixCursorHold.nvim'
-Plug 'lambdalisue/gin.vim'
-Plug 'thinca/vim-quickrun'
-Plug 'thinca/vim-scouter'
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
-Plug 'lambdalisue/fern-git-status.vim'
-Plug 'lambdalisue/nerdfont.vim'
-Plug 'lambdalisue/fern-renderer-nerdfont.vim'
-Plug 'lambdalisue/glyph-palette.vim'
-Plug 'airblade/vim-gitgutter'
-Plug 'rcabralc/monokai-airline.vim'
-Plug 'godlygeek/tabular'
-Plug 'preservim/vim-markdown'
-Plug 'nastevens/vim-cargo-make'
-Plug 'cespare/vim-toml'
-Plug 'nastevens/vim-duckscript'
-Plug 'NoahTheDuke/vim-just'
-Plug 'IndianBoy42/tree-sitter-just'
-Plug 'vim-jp/vimdoc-ja'
-Plug 'imsnif/kdl.vim'
-Plug 'mattn/calendar-vim'
-cmd([[Plug 'neoclide/coc.nvim', {'branch': 'release'}]])
-cmd([[Plug 'pappasam/coc-jedi', { 'do': 'yarn install --frozen-lockfile && yarn build', 'branch': 'main' }]])
-cmd([[Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }]])
-cmd([[Plug 'lambdalisue/fern.vim', {'branch': 'main'}]])
-cmd([[Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}]])
-vim.call('plug#end')
+-- packer.nvim のファイルを読み込む
+require('plugins')
 
 -- coc.nvim settings
 -- <Tab>で候補をナビゲート
